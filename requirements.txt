@@ -8,3 +8,4 @@ PyYAML==3.10
 requests==2.0.1
 selenium
 UnittestZero
+-e git+https://github.com/mozilla/bidpom.git@master#egg=browserid
