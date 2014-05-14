@@ -8,30 +8,38 @@ from pages.page import Page
 
 
 class Base(Page):
-    """
-    Base class for global project specific functions
-    """
-    
-    @property
-    def is_signed_in(self):
-        return not self.header.is_sign_in_visible
+
+    _browserid_login_locator = (By.CSS_SELECTOR, '.browserid-login > span')
+    _logout_menu_item_locator = (By.CSS_SELECTOR, '.auth-menu > .browserid-logout')
 
     @property
     def header(self):
-        """Return the common Header region."""
         return self.HeaderRegion(self.testsetup)
 
-    
+    @property
+    def is_user_logged_in(self):
+        return self.is_element_not_visible(*self._browserid_login_locator)
+
+    def login(self, user, expectation):
+        self.click_browserid_login()
+        from browserid import BrowserID
+        browser_id = BrowserID(self.selenium, self.timeout)
+        browser_id.sign_in(user['email'], user['password'])
+        self.wait_for_element_visible(*self._logout_menu_item_locator)
+        return self.expected_page(expectation)
+
+    def expected_page(self, expectation):
+        if expectation == 'user_profile':
+            from pages.user_profile import UserProfilePage
+            return UserProfilePage(self.testsetup)
+
+    def click_browserid_login(self):
+        self.selenium.find_element(*self._browserid_login_locator).click()
+
     class HeaderRegion(Page):
-        _browserid_login_locator = (By.CSS_SELECTOR, '.browserid-login > span')
-        _logout_menu_item_locator = (By.CSS_SELECTOR, '.auth-menu > .browserid-logout')
 
-        def click_sign_in(self):
-            self.selenium.find_element(*self._browserid_login_locator).click()
-
-        def click_sign_out(self):
-            self.selenium.find_element(*self._logout_menu_item_locator).click()
+        _auth_menu_locator = (By.CSS_SELECTOR, '#nav-main-menu .auth-menu')
 
         @property
-        def is_sign_in_visible(self):
-            return self.is_element_visible(*self._browserid_login_locator)
+        def diplayed_text(self):
+            return self.selenium.find_element(*self._auth_menu_locator).text
