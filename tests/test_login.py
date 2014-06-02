@@ -23,7 +23,21 @@ class TestLogin:
         Assert.true(user_profile_page.is_the_current_page)
         Assert.true(user_profile_page.is_user_logged_in)
 
-        user_profile_page.enter_name(new_user['fullname'])
-        user_profile_page.click_save_button()
+        user_profile_page.enter_name(new_user['profile']['name'])
+        user_dashboard_page = user_profile_page.click_save_button()
 
-        Assert.true(new_user['fullname'] in home_page.header.diplayed_text)
+        Assert.true(new_user['profile']['name'] in user_dashboard_page.header.diplayed_text)
+        Assert.true(new_user['profile']['name'] in user_dashboard_page.displayed_profile_name)
+
+    @pytest.mark.credentials
+    def test_that_name_of_exisiting_user_appers_on_login(self, mozwebqa, existing_user):
+        home_page = HomePage(mozwebqa)
+        home_page.go_to_page()
+        Assert.false(home_page.is_user_logged_in)
+
+        user_dashboard_page = home_page.login(existing_user, 'user_dashboard')
+        Assert.true(user_dashboard_page.is_the_current_page)
+        Assert.true(user_dashboard_page.is_user_logged_in)
+
+        Assert.true(existing_user['profile']['name'] in user_dashboard_page.header.diplayed_text)
+        Assert.true(existing_user['profile']['name'] in user_dashboard_page.displayed_profile_name)

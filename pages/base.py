@@ -32,6 +32,9 @@ class Base(Page):
         if expectation == 'user_profile':
             from pages.user_profile import UserProfilePage
             return UserProfilePage(self.testsetup)
+        elif expectation == 'user_dashboard':
+            from pages.user_dashboard import UserDashboardPage
+            return UserDashboardPage(self.testsetup)
 
     def click_browserid_login(self):
         self.selenium.find_element(*self._browserid_login_locator).click()
