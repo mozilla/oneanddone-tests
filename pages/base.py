@@ -30,10 +30,10 @@ class Base(Page):
 
     def expected_page(self, expectation):
         if expectation == 'user_profile':
-            from pages.user_profile import UserProfilePage
-            return UserProfilePage(self.testsetup)
+            from pages.user.user_profile_edit import UserProfileEditPage
+            return UserProfileEditPage(self.testsetup)
         elif expectation == 'user_dashboard':
-            from pages.user_dashboard import UserDashboardPage
+            from pages.user.user_dashboard import UserDashboardPage
             return UserDashboardPage(self.testsetup)
 
     def click_browserid_login(self):
@@ -42,7 +42,13 @@ class Base(Page):
     class HeaderRegion(Page):
 
         _auth_menu_locator = (By.CSS_SELECTOR, '#nav-main-menu .auth-menu')
+        _user_profile_details_locator = (By.ID, 'view-profile')
 
         @property
         def diplayed_text(self):
             return self.selenium.find_element(*self._auth_menu_locator).text
+
+        def click_user_profile_details(self):
+            self.selenium.find_element(*self._user_profile_details_locator).click()
+            from pages.user.user_profile_details import UserProfileDetailsPage
+            return UserProfileDetailsPage(self.testsetup)

@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from pages.home import HomePage
-from pages.user_profile import UserProfilePage
 
 from unittestzero import Assert
 import pytest
@@ -19,18 +18,18 @@ class TestLogin:
         home_page.go_to_page()
         Assert.false(home_page.is_user_logged_in)
 
-        user_profile_page = home_page.login(new_user, 'user_profile')
-        Assert.true(user_profile_page.is_the_current_page)
-        Assert.true(user_profile_page.is_user_logged_in)
+        user_profile_edit_page = home_page.login(new_user, 'user_profile')
+        Assert.true(user_profile_edit_page.is_the_current_page)
+        Assert.true(user_profile_edit_page.is_user_logged_in)
 
-        user_profile_page.enter_name(new_user['profile']['name'])
-        user_dashboard_page = user_profile_page.click_save_button()
+        user_profile_edit_page.enter_name(new_user['profile']['name'])
+        user_dashboard_page = user_profile_edit_page.click_save_button()
 
         Assert.true(new_user['profile']['name'] in user_dashboard_page.header.diplayed_text)
         Assert.true(new_user['profile']['name'] in user_dashboard_page.displayed_profile_name)
 
     @pytest.mark.credentials
-    def test_that_name_of_exisiting_user_appers_on_login(self, mozwebqa, existing_user):
+    def test_that_name_of_existing_user_appears_on_login(self, mozwebqa, existing_user):
         home_page = HomePage(mozwebqa)
         home_page.go_to_page()
         Assert.false(home_page.is_user_logged_in)
