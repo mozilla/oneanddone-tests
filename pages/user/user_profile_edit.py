@@ -6,10 +6,10 @@
 
 from selenium.webdriver.common.by import By
 
-from base import Base
+from pages.base import Base
 
 
-class UserProfilePage(Base):
+class UserProfileEditPage(Base):
 
     _page_title = 'User profile | Mozilla One and Done'
 
@@ -21,5 +21,5 @@ class UserProfilePage(Base):
 
     def click_save_button(self):
         self.selenium.find_element(*self._save_button_locator).click()
-        from pages.user_dashboard import UserDashboardPage
+        from pages.user.user_dashboard import UserDashboardPage
         return UserDashboardPage(self.testsetup)

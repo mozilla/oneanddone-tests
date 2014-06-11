@@ -12,7 +12,7 @@ class MockUser(dict):
 
         now = str(datetime.datetime.now())
         self['id'] = None
-        self['username'] = 'mozwebqauser'
+        self['username'] = 'mozwebqauser%s' % now.split()[0]
         self['email'] = 'testuser@mozwebqa.com'
         self['password'] = 'p@ssw0rd'
         self['profile'] = {'name': 'MozWebQA User- ' + now}

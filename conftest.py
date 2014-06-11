@@ -35,7 +35,12 @@ def existing_user(request):
     testuser = get_personatestuser()
     mozwebqa = request.getfuncargvalue('mozwebqa')
     request.existing_user = create_user_in_database(
-        mozwebqa, MockUser(email=testuser['email'], password=testuser['pass']))
+        mozwebqa, MockUser(
+            email=testuser['email'],
+            username=testuser['email'].split('@')[0],
+            password=testuser['pass']
+        )
+    )
 
     def fin():
         # Delete user from application database after the test
@@ -49,7 +54,11 @@ def existing_user(request):
 @pytest.fixture(scope='function')
 def new_user(request):
     testuser = get_personatestuser()
-    request.new_user = MockUser(email=testuser['email'], password=testuser['pass'])
+    request.new_user = MockUser(
+        email=testuser['email'],
+        username=testuser['email'].split('@')[0],
+        password=testuser['pass']
+    )
 
     def fin():
         # Delete user from application database after the test
