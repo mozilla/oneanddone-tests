@@ -71,3 +71,8 @@ class TaskDetailsPage(Base):
         self.selenium.find_element(*self._complete_task_button_locator).click()
         from pages.tasks.task_feedback import TaskFeedbackPage
         return TaskFeedbackPage(self.testsetup)
+
+    def click_abandon_task_button(self):
+        self.selenium.find_element(*self._abandon_task_button_locator).click()
+        from pages.tasks.task_feedback import TaskFeedbackPage
+        return TaskFeedbackPage(self.testsetup)
