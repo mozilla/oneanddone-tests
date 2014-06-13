@@ -22,7 +22,11 @@ class UserDashboardPage(Base):
         return self.selenium.find_element(*self._displayed_profile_name_locator).text
 
     @property
-    def is_any_task_in_progress(self):
+    def is_task_not_in_progress(self):
+        return self.is_element_not_visible(*self._task_in_progress_locator)
+
+    @property
+    def is_task_in_progress(self):
         return self.is_element_visible(*self._task_in_progress_locator)
 
     @property
