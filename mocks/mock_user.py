@@ -15,7 +15,9 @@ class MockUser(dict):
         self['username'] = 'mozwebqauser%s' % now.split()[0]
         self['email'] = 'testuser@mozwebqa.com'
         self['password'] = 'p@ssw0rd'
-        self['profile'] = {'name': 'MozWebQA User- ' + now}
+        self['profile'] = {'name': 'MozWebQA User- ' + now,
+                           'username': self['username'],
+                           'privacy_policy_accepted': False}
 
         self.update(**kwargs)
 
