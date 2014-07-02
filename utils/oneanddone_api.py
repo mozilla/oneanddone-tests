@@ -58,10 +58,9 @@ class OneAndDoneAPI:
     def create_user(self, user):
         uri = 'api/v1/user'
         post_data = {
+            u'username': unicode(user['username']),
             u'email': unicode(user['email']),
-            u'profile': {u'name': unicode(user['profile']['name']),
-                         u'username': unicode(user['profile']['username']),
-                         u'privacy_policy_accepted': user['profile']['privacy_policy_accepted']}
+            u'profile': {u'name': unicode(user['profile']['name'])}
         }
         user['id'], response_text = self._do_post(uri, post_data, True)
         user['profile']['name'] = response_text['profile']['name']
