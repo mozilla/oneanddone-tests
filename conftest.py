@@ -34,11 +34,15 @@ def create_user_in_database(mozwebqa, user):
 def existing_user(request):
     testuser = get_personatestuser()
     mozwebqa = request.getfuncargvalue('mozwebqa')
+    username = testuser['email'].split('@')[0]
     request.existing_user = create_user_in_database(
         mozwebqa, MockUser(
             email=testuser['email'],
-            username=testuser['email'].split('@')[0],
-            password=testuser['pass']
+            username=username,
+            password=testuser['pass'],
+            profile={'name': 'mozwebqa_testuser',
+                     'username': username,
+                     'privacy_policy_accepted': True}
         )
     )
 
