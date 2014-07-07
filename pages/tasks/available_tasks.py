@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from pages.base import Base
 from pages.page import PageRegion
+from pages.tasks.task_details import TaskDetailsPage
 
 
 class AvailableTasksPage(Base):
@@ -27,7 +28,7 @@ class AvailableTasksPage(Base):
                 for web_element in self.selenium.find_elements(*self._available_tasks_list_locator)]
 
     class Task(PageRegion):
-        _name_locator = (By.CSS_SELECTOR, 'a.task-name ')
+        _name_locator = (By.CSS_SELECTOR, 'a.task-name')
 
         @property
         def name(self):
@@ -35,5 +36,4 @@ class AvailableTasksPage(Base):
 
         def click(self):
             self.find_element(*self._name_locator).click()
-            from pages.tasks.task_details import TaskDetailsPage
             return TaskDetailsPage(self.testsetup)

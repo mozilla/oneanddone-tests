@@ -7,6 +7,8 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
+from pages.home import HomePage
+from pages.user.user_profile_delete import UserProfileDeletePage
 
 
 class UserProfileEditPage(Base):
@@ -15,6 +17,7 @@ class UserProfileEditPage(Base):
 
     _name_input_locator = (By.ID, 'id_name')
     _privacy_policy_checkbox_locator = (By.ID, 'id_privacy_policy_accepted')
+    _delete_profile_button_locator = (By.ID, 'delete-profile')
     _save_button_locator = (By.CSS_SELECTOR, '.edit-profile > .actions-container > .button')
 
     @property
@@ -27,7 +30,10 @@ class UserProfileEditPage(Base):
     def toggle_privacy_policy_checkbox(self):
         self.selenium.find_element(*self._privacy_policy_checkbox_locator).click()
 
+    def click_delete_profile_button(self):
+        self.selenium.find_element(*self._delete_profile_button_locator).click()
+        return UserProfileDeletePage(self.testsetup)
+
     def click_save_button(self):
         self.selenium.find_element(*self._save_button_locator).click()
-        from pages.user.user_dashboard import UserDashboardPage
-        return UserDashboardPage(self.testsetup)
+        return HomePage(self.testsetup)

@@ -8,6 +8,8 @@ from selenium.webdriver.common.by import By
 
 from pages.base import Base
 from pages.page import PageRegion
+from pages.user.user_profile_edit import UserProfileEditPage
+from pages.tasks.task_details import TaskDetailsPage
 
 
 class UserProfileDetailsPage(Base):
@@ -15,6 +17,7 @@ class UserProfileDetailsPage(Base):
     _user_profile_name_locator = (By.ID, 'user-profile-name')
     _tasks_completed_locator = (By.ID, 'completed-tasks-count')
     _completed_tasks_list_locator = (By.CSS_SELECTOR, '.task-status > ul > li')
+    _edit_profile_button_locator = (By.ID, 'edit-profile')
 
     @property
     def _page_title(self):
@@ -33,6 +36,10 @@ class UserProfileDetailsPage(Base):
         return [self.Task(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._completed_tasks_list_locator)]
 
+    def click_edit_profile_button(self):
+        self.find_element(*self._edit_profile_button_locator).click()
+        return UserProfileEditPage(self.testsetup)
+
     class Task(PageRegion):
         _name_locator = (By.CSS_SELECTOR, 'a')
 
@@ -42,5 +49,4 @@ class UserProfileDetailsPage(Base):
 
         def click(self):
             self.find_element(*self._name_locator).click()
-            from pages.tasks.task_details import TaskDetailsPage
             return TaskDetailsPage(self.testsetup)

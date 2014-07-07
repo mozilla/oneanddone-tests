@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from browserid import BrowserID
+
 from selenium.webdriver.common.by import By
+
 from pages.page import Page
 
 
@@ -22,7 +25,6 @@ class Base(Page):
 
     def login(self, user, expectation):
         self.click_browserid_login()
-        from browserid import BrowserID
         browser_id = BrowserID(self.selenium, self.timeout)
         browser_id.sign_in(user['email'], user['password'])
         self.wait_for_element_visible(*self._logout_menu_item_locator)
@@ -32,9 +34,9 @@ class Base(Page):
         if expectation == 'user_profile':
             from pages.user.user_profile_edit import UserProfileEditPage
             return UserProfileEditPage(self.testsetup)
-        elif expectation == 'user_dashboard':
-            from pages.user.user_dashboard import UserDashboardPage
-            return UserDashboardPage(self.testsetup)
+        elif expectation == 'home_page':
+            from pages.home import HomePage
+            return HomePage(self.testsetup)
 
     def click_browserid_login(self):
         self.selenium.find_element(*self._browserid_login_locator).click()
