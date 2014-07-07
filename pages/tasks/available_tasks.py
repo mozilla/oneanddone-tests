@@ -27,7 +27,7 @@ class AvailableTasksPage(Base):
                 for web_element in self.selenium.find_elements(*self._available_tasks_list_locator)]
 
     class Task(PageRegion):
-        _name_locator = (By.CSS_SELECTOR, '.task-name > a')
+        _name_locator = (By.CSS_SELECTOR, 'a.task-name ')
 
         @property
         def name(self):
