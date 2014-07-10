@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from pages.base import Base
 from pages.page import PageRegion
+from pages.tasks.task_feedback import TaskFeedbackPage
 
 
 class TaskDetailsPage(Base):
@@ -64,15 +65,13 @@ class TaskDetailsPage(Base):
 
     def click_save_for_later_button(self):
         self.selenium.find_element(*self._save_for_later_button_locator).click()
-        from pages.user.user_dashboard import UserDashboardPage
-        return UserDashboardPage(self.testsetup)
+        from pages.home import HomePage
+        return HomePage(self.testsetup)
 
     def click_complete_task_button(self):
         self.selenium.find_element(*self._complete_task_button_locator).click()
-        from pages.tasks.task_feedback import TaskFeedbackPage
         return TaskFeedbackPage(self.testsetup)
 
     def click_abandon_task_button(self):
         self.selenium.find_element(*self._abandon_task_button_locator).click()
-        from pages.tasks.task_feedback import TaskFeedbackPage
         return TaskFeedbackPage(self.testsetup)

@@ -18,12 +18,12 @@ class TestUserTasks:
         home_page.go_to_page()
         Assert.false(home_page.is_user_logged_in)
 
-        user_dashboard_page = home_page.login(existing_user, 'user_dashboard')
-        Assert.true(user_dashboard_page.is_the_current_page)
-        Assert.true(user_dashboard_page.is_user_logged_in)
+        logged_in_home_page = home_page.login(existing_user, 'home_page')
+        Assert.true(logged_in_home_page.is_the_current_page)
+        Assert.true(logged_in_home_page.is_user_logged_in)
 
         # click available task button
-        available_tasks_page = user_dashboard_page.click_pick_a_task_button()
+        available_tasks_page = logged_in_home_page.click_pick_a_task_button()
         Assert.true(available_tasks_page.is_the_current_page)
         Assert.greater(len(available_tasks_page.available_tasks), 0)
 
@@ -45,13 +45,13 @@ class TestUserTasks:
         Assert.true(task_details_page.is_complete_task_button_visible)
 
         # click save for later button
-        updated_user_dashboard_page = task_details_page.click_save_for_later_button()
-        Assert.true(updated_user_dashboard_page.is_the_current_page)
+        updated_logged_in_home_page = task_details_page.click_save_for_later_button()
+        Assert.true(updated_logged_in_home_page.is_the_current_page)
 
         # click on task in progress
-        Assert.true(updated_user_dashboard_page.is_task_in_progress)
-        Assert.equal(updated_user_dashboard_page.task_in_progress, selected_task_name)
-        task_in_progress_detail_page = updated_user_dashboard_page.click_task_in_progress()
+        Assert.true(updated_logged_in_home_page.is_task_in_progress)
+        Assert.equal(updated_logged_in_home_page.task_in_progress, selected_task_name)
+        task_in_progress_detail_page = updated_logged_in_home_page.click_task_in_progress()
         Assert.true(task_in_progress_detail_page.is_the_current_page)
 
         # click complete task button
@@ -59,10 +59,10 @@ class TestUserTasks:
         Assert.true(task_feedback_page.is_the_current_page)
 
         # click no thanks button
-        user_dashboard_after_task_completion = task_feedback_page.click_no_thanks_button()
+        logged_in_home_page_after_task_completion = task_feedback_page.click_no_thanks_button()
 
         # click user profile details link
-        user_profile_details_page = user_dashboard_after_task_completion.header.click_user_profile_details()
+        user_profile_details_page = logged_in_home_page_after_task_completion.header.click_user_profile_details()
         Assert.true(user_profile_details_page.is_the_current_page)
 
         Assert.equal(user_profile_details_page.diplayed_completed_tasks_count, 1)
@@ -75,12 +75,12 @@ class TestUserTasks:
         home_page.go_to_page()
         Assert.false(home_page.is_user_logged_in)
 
-        user_dashboard_page = home_page.login(existing_user, 'user_dashboard')
-        Assert.true(user_dashboard_page.is_the_current_page)
-        Assert.true(user_dashboard_page.is_user_logged_in)
+        logged_in_home_page = home_page.login(existing_user, 'home_page')
+        Assert.true(logged_in_home_page.is_the_current_page)
+        Assert.true(logged_in_home_page.is_user_logged_in)
 
         # click available task button
-        available_tasks_page = user_dashboard_page.click_pick_a_task_button()
+        available_tasks_page = logged_in_home_page.click_pick_a_task_button()
         Assert.true(available_tasks_page.is_the_current_page)
         Assert.greater(len(available_tasks_page.available_tasks), 0)
 
@@ -99,12 +99,12 @@ class TestUserTasks:
         Assert.equal(task_feedback_page.name, selected_task_name)
 
         # click no thanks button
-        user_dashboard_after_abandon_task = task_feedback_page.click_no_thanks_button()
-        Assert.true(user_dashboard_after_abandon_task.is_the_current_page)
-        Assert.true(user_dashboard_after_abandon_task.is_task_not_in_progress)
+        logged_in_home_page_after_abandon_task = task_feedback_page.click_no_thanks_button()
+        Assert.true(logged_in_home_page_after_abandon_task.is_the_current_page)
+        Assert.true(logged_in_home_page_after_abandon_task.is_task_not_in_progress)
 
         # click user profile details link
-        user_profile_details_page = user_dashboard_after_abandon_task.header.click_user_profile_details()
+        user_profile_details_page = logged_in_home_page_after_abandon_task.header.click_user_profile_details()
         Assert.true(user_profile_details_page.is_the_current_page)
 
         Assert.equal(user_profile_details_page.diplayed_completed_tasks_count, 0)
