@@ -23,11 +23,11 @@ class UserProfileEditPage(Base):
 
     @property
     def display_name(self):
-        return self.selenium.find_element(*self._name_input_locator).get_attribute("value")
+        return self.selenium.find_element(*self._name_input_locator).get_attribute('value')
 
     @property
     def username(self):
-        return self.selenium.find_element(*self._username_input_locator).get_attribute("value")
+        return self.selenium.find_element(*self._username_input_locator).get_attribute('value')
 
     @property
     def is_privacy_policy_checkbox_checked(self):
