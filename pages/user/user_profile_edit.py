@@ -16,9 +16,18 @@ class UserProfileEditPage(Base):
     _page_title = 'User profile | Mozilla One and Done'
 
     _name_input_locator = (By.ID, 'id_name')
+    _username_input_locator = (By.ID, 'id_username')
     _privacy_policy_checkbox_locator = (By.ID, 'id_privacy_policy_accepted')
     _delete_profile_button_locator = (By.ID, 'delete-profile')
-    _save_button_locator = (By.CSS_SELECTOR, '.edit-profile > .actions-container > .button')
+    _save_button_locator = (By.ID, 'save-profile')
+
+    @property
+    def display_name(self):
+        return self.selenium.find_element(*self._name_input_locator).get_attribute('value')
+
+    @property
+    def username(self):
+        return self.selenium.find_element(*self._username_input_locator).get_attribute('value')
 
     @property
     def is_privacy_policy_checkbox_checked(self):
@@ -26,6 +35,9 @@ class UserProfileEditPage(Base):
 
     def enter_name(self, fullname):
         self.type_in_element(self._name_input_locator, fullname)
+
+    def enter_username(self, username):
+        self.type_in_element(self._username_input_locator, username)
 
     def toggle_privacy_policy_checkbox(self):
         self.selenium.find_element(*self._privacy_policy_checkbox_locator).click()
