@@ -17,7 +17,7 @@ class UserProfileEditPage(Base):
 
     _name_input_locator = (By.ID, 'id_name')
     _username_input_locator = (By.ID, 'id_username')
-    _privacy_policy_checkbox_locator = (By.ID, 'id_privacy_policy_accepted')
+    _privacy_policy_checkbox_locator = (By.ID, 'id_pp_checkbox')
     _delete_profile_button_locator = (By.ID, 'delete-profile')
     _save_button_locator = (By.ID, 'save-profile')
 
