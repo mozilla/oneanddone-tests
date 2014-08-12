@@ -15,7 +15,7 @@ class HomePage(Base):
 
     _page_title = 'Mozilla One and Done'
 
-    _displayed_profile_name_locator = (By.CSS_SELECTOR, '.content-container > h3')
+    _displayed_profile_name_locator = (By.CSS_SELECTOR, '.billboard h3')
     _task_in_progress_locator = (By.ID, 'task-in-progress')
     _pick_a_task_locator = (By.ID, 'pick-a-task')
 

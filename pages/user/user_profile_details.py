@@ -14,8 +14,8 @@ from pages.tasks.task_details import TaskDetailsPage
 
 class UserProfileDetailsPage(Base):
 
-    _user_profile_name_locator = (By.ID, 'user-profile-name')
-    _tasks_completed_locator = (By.ID, 'completed-tasks-count')
+    _user_profile_name_locator = (By.CSS_SELECTOR, '#user-profile-name > span')
+    _tasks_completed_locator = (By.CSS_SELECTOR, '#completed-tasks-count > span')
     _completed_tasks_list_locator = (By.CSS_SELECTOR, '.task-status > ul > li')
     _edit_profile_button_locator = (By.ID, 'edit-profile')
 
