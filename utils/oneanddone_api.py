@@ -22,7 +22,8 @@ class OneAndDoneAPI:
         """Make a Delete Request"""
         response = requests.delete(
             '%s/%s/%s/' % (self.base_url, uri, lookup_field),
-            headers=self.headers)
+            headers=self.headers,
+            verify=False)
 
         response.raise_for_status()
         if response.status_code == 204:
@@ -37,7 +38,8 @@ class OneAndDoneAPI:
         response = requests.post(
             "%s/%s/" % (self.base_url, uri),
             data=json.dumps(post_data),
-            headers=self.headers)
+            headers=self.headers,
+            verify=False)
         response.raise_for_status()
         text = json.loads(response.text)
 

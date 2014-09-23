@@ -41,7 +41,7 @@ class TestUserProfile:
         logged_in_home_page_after_cancel_deletion = user_profile_delete_page.click_cancel_button()
         Assert.true(logged_in_home_page_after_cancel_deletion.is_the_current_page)
         Assert.true(logged_in_home_page_after_cancel_deletion.is_user_logged_in)
-        Assert.true(existing_user['profile']['name'] in logged_in_home_page_after_cancel_deletion.header.diplayed_text)
+        Assert.true(existing_user['profile']['name'].upper() in logged_in_home_page_after_cancel_deletion.header.profile_link_text)
         Assert.true(existing_user['profile']['name'] in logged_in_home_page_after_cancel_deletion.displayed_profile_name)
 
         # navigate back to the delete profile screen
@@ -86,7 +86,7 @@ class TestUserProfile:
         home_page = user_profile_edit_page.click_save_button()
 
         Assert.true(home_page.is_the_current_page)
-        Assert.true(new_display_name in home_page.header.diplayed_text)
+        Assert.true(new_display_name.upper() in home_page.header.profile_link_text)
         Assert.true(new_display_name in home_page.displayed_profile_name)
 
         # navigate to edit profile page
