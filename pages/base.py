@@ -13,7 +13,7 @@ from pages.page import Page
 class Base(Page):
 
     _browserid_login_locator = (By.CSS_SELECTOR, '.browserid-login > span')
-    _logout_menu_item_locator = (By.CSS_SELECTOR, '.auth-menu > .browserid-logout')
+    _logout_menu_item_locator = (By.CSS_SELECTOR, 'a.browserid-logout')
 
     @property
     def header(self):
@@ -43,14 +43,13 @@ class Base(Page):
 
     class HeaderRegion(Page):
 
-        _auth_menu_locator = (By.CSS_SELECTOR, '#nav-main-menu .auth-menu')
-        _user_profile_details_locator = (By.ID, 'view-profile')
+        _profile_link_locator = (By.ID, 'view-profile')
 
         @property
-        def diplayed_text(self):
-            return self.selenium.find_element(*self._auth_menu_locator).text
+        def profile_link_text(self):
+            return self.selenium.find_element(*self._profile_link_locator).text
 
         def click_user_profile_details(self):
-            self.selenium.find_element(*self._user_profile_details_locator).click()
+            self.selenium.find_element(*self._profile_link_locator).click()
             from pages.user.user_profile_details import UserProfileDetailsPage
             return UserProfileDetailsPage(self.testsetup)

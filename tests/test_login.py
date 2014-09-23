@@ -27,7 +27,7 @@ class TestLogin:
         Assert.true(user_profile_edit_page.is_privacy_policy_checkbox_checked)
         logged_in_home_page = user_profile_edit_page.click_save_button()
 
-        Assert.true(new_user['profile']['name'] in logged_in_home_page.header.diplayed_text)
+        Assert.true(new_user['profile']['name'].upper() in logged_in_home_page.header.profile_link_text)
         Assert.true(new_user['profile']['name'] in logged_in_home_page.displayed_profile_name)
 
     @pytest.mark.credentials
@@ -40,5 +40,5 @@ class TestLogin:
         Assert.true(logged_in_home_page.is_the_current_page)
         Assert.true(logged_in_home_page.is_user_logged_in)
 
-        Assert.true(existing_user['profile']['name'] in logged_in_home_page.header.diplayed_text)
+        Assert.true(existing_user['profile']['name'].upper() in logged_in_home_page.header.profile_link_text)
         Assert.true(existing_user['profile']['name'] in logged_in_home_page.displayed_profile_name)
