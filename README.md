@@ -31,7 +31,7 @@ How to Set up and Build the Tests Locally
 -----------------------------------------
 This repository contains Selenium tests used to test the oneanddone website.
 
-Detailed instructions for getting set up and running our Selenium tests can be found on the QMO website at https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/.
+Detailed instructions for getting set up and running our Selenium tests can be found on the MDN website at https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests.
 
 Please follow the steps in that document and feel free to ask questions in irc if you get stuck.
 
