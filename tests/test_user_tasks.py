@@ -99,12 +99,11 @@ class TestUserTasks:
         Assert.equal(task_feedback_page.name, selected_task_name)
 
         # click no thanks button
-        logged_in_home_page_after_abandon_task = task_feedback_page.click_no_thanks_button()
-        Assert.true(logged_in_home_page_after_abandon_task.is_the_current_page)
-        Assert.true(logged_in_home_page_after_abandon_task.is_task_not_in_progress)
+        whats_next_page = task_feedback_page.click_no_thanks_button()
+        Assert.true(whats_next_page.is_the_current_page)
 
         # click user profile details link
-        user_profile_details_page = logged_in_home_page_after_abandon_task.header.click_user_profile_details()
+        user_profile_details_page = whats_next_page.header.click_user_profile_details()
         Assert.true(user_profile_details_page.is_the_current_page)
 
         Assert.equal(user_profile_details_page.diplayed_completed_tasks_count, 0)
