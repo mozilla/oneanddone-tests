@@ -7,6 +7,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
+from pages.tasks.whats_next import WhatsNextPage
 
 
 class TaskFeedbackPage(Base):
@@ -24,5 +25,4 @@ class TaskFeedbackPage(Base):
 
     def click_no_thanks_button(self):
         self.selenium.find_element(*self._no_thanks_button_locator).click()
-        from pages.home import HomePage
-        return HomePage(self.testsetup)
+        return WhatsNextPage(self.testsetup)
