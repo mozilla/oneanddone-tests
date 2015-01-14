@@ -31,9 +31,12 @@ class Base(Page):
         return self.expected_page(expectation)
 
     def expected_page(self, expectation):
-        if expectation == 'user_profile':
+        if expectation == 'user_profile_edit':
             from pages.user.user_profile_edit import UserProfileEditPage
             return UserProfileEditPage(self.testsetup)
+        elif expectation == 'user_profile_details':
+            from pages.user.user_profile_details import UserProfileDetailsPage
+            return UserProfileDetailsPage(self.testsetup)
         elif expectation == 'home_page':
             from pages.home import HomePage
             return HomePage(self.testsetup)
