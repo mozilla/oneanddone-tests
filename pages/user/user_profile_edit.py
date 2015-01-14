@@ -7,7 +7,6 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
-from pages.home import HomePage
 from pages.user.user_profile_delete import UserProfileDeletePage
 
 
@@ -46,6 +45,6 @@ class UserProfileEditPage(Base):
         self.selenium.find_element(*self._delete_profile_button_locator).click()
         return UserProfileDeletePage(self.testsetup)
 
-    def click_save_button(self):
+    def click_save_button(self, expectation):
         self.selenium.find_element(*self._save_button_locator).click()
-        return HomePage(self.testsetup)
+        return self.expected_page(expectation)

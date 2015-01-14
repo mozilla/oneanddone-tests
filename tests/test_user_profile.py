@@ -54,7 +54,7 @@ class TestUserProfile:
         Assert.false(home_page_after_profile_deletion.is_user_logged_in)
 
         # click login link
-        create_profile_page = home_page_after_profile_deletion.login(existing_user, 'user_profile')
+        create_profile_page = home_page_after_profile_deletion.login(existing_user, 'user_profile_edit')
         Assert.true(create_profile_page.is_user_logged_in)
         Assert.true(create_profile_page.is_the_current_page)
 
@@ -83,13 +83,12 @@ class TestUserProfile:
         new_username = re.sub(r'[\W_]+', '', existing_user['profile']['username'] + str(time.time()))
         user_profile_edit_page.enter_name(new_display_name)
         user_profile_edit_page.enter_username(new_username)
-        home_page = user_profile_edit_page.click_save_button()
+        user_profile_details_page = user_profile_edit_page.click_save_button('user_profile_details')
 
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(new_display_name.upper() in home_page.header.profile_link_text)
-        Assert.true(new_display_name in home_page.displayed_profile_name)
+        Assert.true(user_profile_details_page.is_the_current_page)
+        Assert.equal(new_display_name, user_profile_details_page.user_profile_name)
 
-        # navigate to edit profile page
-        user_profile_edit_page = home_page.header.click_user_profile_details().click_edit_profile_button()
+        # edit profile again
+        user_profile_edit_page = user_profile_details_page.click_edit_profile_button()
         Assert.equal(new_display_name, user_profile_edit_page.display_name)
         Assert.equal(new_username, user_profile_edit_page.username)
