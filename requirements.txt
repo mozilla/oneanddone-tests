@@ -1,8 +1,8 @@
 # This pulls in all the libraries needed to run Selenium tests
 # on Mozilla WebQA projects
 
-py==1.4.18
-pytest==2.4.2
+py==1.4.27
+pytest==2.7.1
 pytest-mozwebqa
 PyYAML==3.10
 requests==2.4.3
