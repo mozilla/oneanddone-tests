@@ -11,64 +11,35 @@ from mocks.mock_user import MockUser
 from utils.oneanddone_api import OneAndDoneAPI
 
 
-def get_personatestuser():
-    # Request TestUser credentials from http://personatestuser.org
-    personatestuser_uri = 'http://personatestuser.org/email'
-    response = requests.get(personatestuser_uri)
-    return response.json()
+@pytest.fixture
+def persona_test_user():
+    return requests.get('http://personatestuser.org/email').json()
 
 
-def delete_user_from_database(mozwebqa, user):
-    credentials = mozwebqa.credentials['default']
-    api = OneAndDoneAPI(credentials['api_token'], mozwebqa.base_url)
-    api.delete_user(user)
-
-
-def create_user_in_database(mozwebqa, user):
-    credentials = mozwebqa.credentials['default']
-    api = OneAndDoneAPI(credentials['api_token'], mozwebqa.base_url)
-    return api.create_user(user)
+@pytest.fixture
+def api(request, variables):
+    token = variables['apiToken']
+    url = request.getfuncargvalue('mozwebqa').base_url
+    return OneAndDoneAPI(token, url)
 
 
 @pytest.fixture(scope='function')
-def existing_user(request):
-    testuser = get_personatestuser()
-    mozwebqa = request.getfuncargvalue('mozwebqa')
-    username = testuser['email'].split('@')[0]
-    request.existing_user = create_user_in_database(
-        mozwebqa, MockUser(
-            email=testuser['email'],
-            username=username,
-            password=testuser['pass'],
-            profile={'name': 'mozwebqa_testuser',
-                     'username': username,
-                     'privacy_policy_accepted': True}
-        )
-    )
-
-    def fin():
-        # Delete user from application database after the test
-        if request.existing_user:
-            delete_user_from_database(mozwebqa, request.existing_user)
-
-    request.addfinalizer(fin)
-    return request.existing_user
+def existing_user(request, new_user, api):
+    new_user['profile'].update({
+        'name': 'mozwebqa_testuser',
+        'username': new_user['username'],
+        'privacy_policy_accepted': True})
+    return api.create_user(new_user)
 
 
 @pytest.fixture(scope='function')
-def new_user(request):
-    testuser = get_personatestuser()
-    request.new_user = MockUser(
-        email=testuser['email'],
-        username=testuser['email'].split('@')[0],
-        password=testuser['pass']
-    )
+def new_user(request, persona_test_user, api):
+    user = MockUser(
+        email=persona_test_user['email'],
+        username=persona_test_user['email'].split('@')[0],
+        password=persona_test_user['pass'])
 
     def fin():
-        # Delete user from application database after the test
-        if request.new_user:
-            mozwebqa = request.getfuncargvalue('mozwebqa')
-            delete_user_from_database(mozwebqa, request.new_user)
-
+        api.delete_user(user)
     request.addfinalizer(fin)
-    return request.new_user
+    return user
