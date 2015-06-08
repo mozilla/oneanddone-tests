@@ -7,7 +7,6 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
-from pages.page import PageRegion
 from pages.tasks.task_feedback import TaskFeedbackPage
 
 
