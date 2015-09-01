@@ -4,13 +4,15 @@
 
 import uuid
 
-from .base_test import BaseTest
+from pages.home import HomePage
 
 
-class TestUserProfile(BaseTest):
+class TestUserProfile():
 
-    def test_that_user_can_edit_and_delete_profile(self, mozwebqa, new_user):
-        home_page = self.login_new_user(mozwebqa, new_user)
+    def test_that_user_can_edit_profile(self, mozwebqa, new_user):
+        home_page = HomePage(mozwebqa)
+        home_page.go_to_page()
+        home_page.login_and_complete_profile(new_user)
 
         profile_details = home_page.header.click_user_profile_details()
         edit_profile = profile_details.click_edit_profile_button()
@@ -37,14 +39,21 @@ class TestUserProfile(BaseTest):
         assert new_user['url'] == edit_profile.user_profile_url
         assert new_user['email'] == edit_profile.bugzilla_email
 
+    def test_that_user_can_delete_profile(self, mozwebqa, new_user):
+        home_page = HomePage(mozwebqa)
+        home_page.go_to_page()
+        home_page.login_and_complete_profile(new_user)
+
+        profile_details = home_page.header.click_user_profile_details()
+        edit_profile = profile_details.click_edit_profile_button()
+
         confirm_delete = edit_profile.click_delete_profile_button()
         assert confirm_delete.is_the_current_page
 
         homepage = confirm_delete.click_cancel_button()
         assert homepage.is_the_current_page
         assert homepage.is_user_logged_in
-        assert new_name.upper() in homepage.header.profile_link_text
-        assert new_name in homepage.displayed_profile_name
+        assert new_user['name'] in homepage.displayed_profile_name
 
         profile_details = home_page.header.click_user_profile_details()
         edit_profile = profile_details.click_edit_profile_button()

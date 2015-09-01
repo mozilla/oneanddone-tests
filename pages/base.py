@@ -30,6 +30,12 @@ class Base(Page):
         from pages.user.user_profile_edit import UserProfileEditPage
         return UserProfileEditPage(self.testsetup)
 
+    def login_and_complete_profile(self, user):
+        edit_profile = self.login(user)
+        edit_profile.type_name(user['name'])
+        edit_profile.type_username(user['name'])
+        return edit_profile.click_save_button('home_page')
+
     def expected_page(self, expectation):
         if expectation == 'user_profile_details':
             from pages.user.user_profile_details import UserProfileDetailsPage

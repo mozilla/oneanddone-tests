@@ -2,13 +2,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from .base_test import BaseTest
+from pages.home import HomePage
 
 
-class TestUserTasks(BaseTest):
+class TestUserTasks():
 
     def test_that_user_can_complete_a_task(self, mozwebqa, new_user):
-        home_page = self.login_new_user(mozwebqa, new_user)
+        home_page = HomePage(mozwebqa)
+        home_page.go_to_page()
+        home_page.login_and_complete_profile(new_user)
 
         available_tasks_page = home_page.click_pick_a_task_button()
         assert available_tasks_page.is_the_current_page
@@ -52,7 +54,9 @@ class TestUserTasks(BaseTest):
         assert task_name == profile_details.completed_tasks[0].name
 
     def test_that_user_can_abandon_a_task(self, mozwebqa, new_user):
-        home_page = self.login_new_user(mozwebqa, new_user)
+        home_page = HomePage(mozwebqa)
+        home_page.go_to_page()
+        home_page.login_and_complete_profile(new_user)
 
         available_tasks_page = home_page.click_pick_a_task_button()
         task_details = available_tasks_page.available_tasks[0].click()
