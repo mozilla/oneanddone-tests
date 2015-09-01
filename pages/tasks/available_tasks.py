@@ -15,17 +15,17 @@ class AvailableTasksPage(Base):
 
     _page_title = 'Tasks | Mozilla One and Done'
 
-    _displayed_profile_name_locator = (By.CSS_SELECTOR, '.content-container > h3')
     _available_tasks_list_locator = (By.CSS_SELECTOR, '.task-list > li')
-
-    @property
-    def displayed_profile_name(self):
-        return self.selenium.find_element(*self._displayed_profile_name_locator).text
+    _displayed_profile_name_locator = (By.CSS_SELECTOR, '.content-container > h3')
 
     @property
     def available_tasks(self):
         return [self.Task(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._available_tasks_list_locator)]
+
+    @property
+    def displayed_profile_name(self):
+        return self.selenium.find_element(*self._displayed_profile_name_locator).text
 
     class Task(PageRegion):
         _name_locator = (By.CSS_SELECTOR, 'a.task-name')

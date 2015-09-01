@@ -23,18 +23,16 @@ class Base(Page):
     def is_user_logged_in(self):
         return self.is_element_not_visible(*self._browserid_login_locator)
 
-    def login(self, user, expectation):
+    def login(self, user):
         self.click_browserid_login()
         browser_id = BrowserID(self.selenium, self.timeout)
         browser_id.sign_in(user['email'], user['password'])
         self.wait_for_element_visible(*self._logout_menu_item_locator)
-        return self.expected_page(expectation)
+        from pages.user.user_profile_edit import UserProfileEditPage
+        return UserProfileEditPage(self.testsetup)
 
     def expected_page(self, expectation):
-        if expectation == 'user_profile_edit':
-            from pages.user.user_profile_edit import UserProfileEditPage
-            return UserProfileEditPage(self.testsetup)
-        elif expectation == 'user_profile_details':
+        if expectation == 'user_profile_details':
             from pages.user.user_profile_details import UserProfileDetailsPage
             return UserProfileDetailsPage(self.testsetup)
         elif expectation == 'home_page':
