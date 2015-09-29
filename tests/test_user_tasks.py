@@ -4,10 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from pages.home import HomePage
-
-from unittestzero import Assert
 import pytest
+
+from pages.home import HomePage
 
 
 class TestUserTasks:
@@ -16,94 +15,94 @@ class TestUserTasks:
     def test_that_user_can_complete_a_task(self, mozwebqa, existing_user):
         home_page = HomePage(mozwebqa)
         home_page.go_to_page()
-        Assert.false(home_page.is_user_logged_in)
+        assert not home_page.is_user_logged_in
 
         logged_in_home_page = home_page.login(existing_user, 'home_page')
-        Assert.true(logged_in_home_page.is_the_current_page)
-        Assert.true(logged_in_home_page.is_user_logged_in)
+        assert logged_in_home_page.is_the_current_page
+        assert logged_in_home_page.is_user_logged_in
 
         # click available task button
         available_tasks_page = logged_in_home_page.click_pick_a_task_button()
-        Assert.true(available_tasks_page.is_the_current_page)
-        Assert.greater(len(available_tasks_page.available_tasks), 0)
+        assert available_tasks_page.is_the_current_page
+        assert len(available_tasks_page.available_tasks) > 0
 
         # select first available task from list
         selected_task_name = available_tasks_page.available_tasks[0].name
         task_details_page = available_tasks_page.available_tasks[0].click()
-        Assert.true(task_details_page.is_the_current_page)
-        Assert.true(task_details_page.is_get_started_button_visible)
-        Assert.true(task_details_page.is_save_for_later_button_not_visible)
-        Assert.true(task_details_page.is_abandon_task_button_not_visible)
-        Assert.true(task_details_page.is_complete_task_button_not_visible)
+        assert task_details_page.is_the_current_page
+        assert task_details_page.is_get_started_button_visible
+        assert task_details_page.is_save_for_later_button_not_visible
+        assert task_details_page.is_abandon_task_button_not_visible
+        assert task_details_page.is_complete_task_button_not_visible
 
         # click get started button
         task_details_page.click_get_started_button()
-        Assert.true(task_details_page.is_the_current_page)
-        Assert.true(task_details_page.is_get_started_button_not_visible)
-        Assert.true(task_details_page.is_save_for_later_button_visible)
-        Assert.true(task_details_page.is_abandon_task_button_visible)
-        Assert.true(task_details_page.is_complete_task_button_visible)
+        assert task_details_page.is_the_current_page
+        assert task_details_page.is_get_started_button_not_visible
+        assert task_details_page.is_save_for_later_button_visible
+        assert task_details_page.is_abandon_task_button_visible
+        assert task_details_page.is_complete_task_button_visible
 
         # click save for later button
         updated_logged_in_home_page = task_details_page.click_save_for_later_button()
-        Assert.true(updated_logged_in_home_page.is_the_current_page)
+        assert updated_logged_in_home_page.is_the_current_page
 
         # click on task in progress
-        Assert.true(updated_logged_in_home_page.is_task_in_progress)
-        Assert.equal(updated_logged_in_home_page.task_in_progress, selected_task_name)
+        assert updated_logged_in_home_page.is_task_in_progress
+        assert selected_task_name == updated_logged_in_home_page.task_in_progress
         task_in_progress_detail_page = updated_logged_in_home_page.click_task_in_progress()
-        Assert.true(task_in_progress_detail_page.is_the_current_page)
+        assert task_in_progress_detail_page.is_the_current_page
 
         # click complete task button
         task_feedback_page = task_in_progress_detail_page.click_complete_task_button()
-        Assert.true(task_feedback_page.is_the_current_page)
+        assert task_feedback_page.is_the_current_page
 
         # click no thanks button
         logged_in_home_page_after_task_completion = task_feedback_page.click_no_thanks_button()
 
         # click user profile details link
         user_profile_details_page = logged_in_home_page_after_task_completion.header.click_user_profile_details()
-        Assert.true(user_profile_details_page.is_the_current_page)
+        assert user_profile_details_page.is_the_current_page
 
-        Assert.equal(user_profile_details_page.diplayed_completed_tasks_count, 1)
-        Assert.equal(len(user_profile_details_page.completed_tasks), 1)
-        Assert.equal(user_profile_details_page.completed_tasks[0].name, selected_task_name)
+        assert 1 == user_profile_details_page.diplayed_completed_tasks_count
+        assert 1 == len(user_profile_details_page.completed_tasks)
+        assert selected_task_name == user_profile_details_page.completed_tasks[0].name
 
     @pytest.mark.credentials
     def test_that_user_can_abandon_a_task(self, mozwebqa, existing_user):
         home_page = HomePage(mozwebqa)
         home_page.go_to_page()
-        Assert.false(home_page.is_user_logged_in)
+        assert not home_page.is_user_logged_in
 
         logged_in_home_page = home_page.login(existing_user, 'home_page')
-        Assert.true(logged_in_home_page.is_the_current_page)
-        Assert.true(logged_in_home_page.is_user_logged_in)
+        assert logged_in_home_page.is_the_current_page
+        assert logged_in_home_page.is_user_logged_in
 
         # click available task button
         available_tasks_page = logged_in_home_page.click_pick_a_task_button()
-        Assert.true(available_tasks_page.is_the_current_page)
-        Assert.greater(len(available_tasks_page.available_tasks), 0)
+        assert available_tasks_page.is_the_current_page
+        assert len(available_tasks_page.available_tasks) > 0
 
         # select first available task from list
         selected_task_name = available_tasks_page.available_tasks[0].name
         task_details_page = available_tasks_page.available_tasks[0].click()
-        Assert.true(task_details_page.is_the_current_page)
+        assert task_details_page.is_the_current_page
 
         # click get started button
         task_details_page.click_get_started_button()
-        Assert.true(task_details_page.is_the_current_page)
+        assert task_details_page.is_the_current_page
 
         # click abandon task button
         task_feedback_page = task_details_page.click_abandon_task_button()
-        Assert.true(task_feedback_page.is_the_current_page)
-        Assert.equal(task_feedback_page.name, selected_task_name)
+        assert task_feedback_page.is_the_current_page
+        assert selected_task_name == task_feedback_page.name
 
         # click no thanks button
         whats_next_page = task_feedback_page.click_no_thanks_button()
-        Assert.true(whats_next_page.is_the_current_page)
+        assert whats_next_page.is_the_current_page
 
         # click user profile details link
         user_profile_details_page = whats_next_page.header.click_user_profile_details()
-        Assert.true(user_profile_details_page.is_the_current_page)
+        assert user_profile_details_page.is_the_current_page
 
-        Assert.equal(user_profile_details_page.diplayed_completed_tasks_count, 0)
+        assert 0 == user_profile_details_page.diplayed_completed_tasks_count

@@ -37,7 +37,7 @@ class HomePage(Base):
 
     def go_to_page(self):
         self.selenium.get(self.base_url + '/')
-        self.is_the_current_page
+        assert self.is_the_current_page
 
     def click_task_in_progress(self):
         self.selenium.find_element(*self._task_in_progress_locator).click()
