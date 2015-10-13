@@ -7,8 +7,6 @@
 import json
 import requests
 
-from unittestzero import Assert
-
 
 class OneAndDoneAPI:
 
@@ -55,7 +53,7 @@ class OneAndDoneAPI:
 
     def delete_user(self, user):
         uri = 'api/v1/user'
-        Assert.true(self._do_delete(uri, user['email']), 'Deletion of user with email %s failed' % user['email'])
+        assert self._do_delete(uri, user['email']), 'Deletion of user with email %s failed' % user['email']
 
     def create_user(self, user):
         uri = 'api/v1/user'
@@ -68,5 +66,5 @@ class OneAndDoneAPI:
         }
         user['id'], response_text = self._do_post(uri, post_data, True)
         user['profile']['name'] = response_text['profile']['name']
-        Assert.greater(user['id'], 0, 'No user was created.')
+        assert user['id'] > 0, 'No user was created.'
         return user
