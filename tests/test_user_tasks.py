@@ -7,8 +7,8 @@ from pages.home import HomePage
 
 class TestUserTasks():
 
-    def test_that_user_can_complete_a_task(self, mozwebqa, new_user):
-        home_page = HomePage(mozwebqa)
+    def test_that_user_can_complete_a_task(self, base_url, selenium, new_user):
+        home_page = HomePage(base_url, selenium)
         home_page.go_to_page()
         home_page.login_and_complete_profile(new_user)
 
@@ -53,8 +53,8 @@ class TestUserTasks():
         assert 1 == len(profile_details.completed_tasks)
         assert task_name == profile_details.completed_tasks[0].name
 
-    def test_that_user_can_abandon_a_task(self, mozwebqa, new_user):
-        home_page = HomePage(mozwebqa)
+    def test_that_user_can_abandon_a_task(self, base_url, selenium, new_user):
+        home_page = HomePage(base_url, selenium)
         home_page.go_to_page()
         home_page.login_and_complete_profile(new_user)
 

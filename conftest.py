@@ -6,6 +6,12 @@ import pytest
 import requests
 
 
+@pytest.fixture(scope='session')
+def capabilities(capabilities):
+    capabilities.setdefault('tags', []).append('oneanddone')
+    return capabilities
+
+
 @pytest.fixture
 def persona_test_user():
     return requests.get('http://personatestuser.org/email').json()

@@ -23,4 +23,4 @@ class TaskFeedbackPage(Base):
 
     def click_no_thanks_button(self):
         self.selenium.find_element(*self._no_thanks_button_locator).click()
-        return WhatsNextPage(self.testsetup)
+        return WhatsNextPage(self.base_url, self.selenium)

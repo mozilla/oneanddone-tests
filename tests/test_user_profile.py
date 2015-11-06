@@ -9,8 +9,8 @@ from pages.home import HomePage
 
 class TestUserProfile():
 
-    def test_that_user_can_edit_profile(self, mozwebqa, new_user):
-        home_page = HomePage(mozwebqa)
+    def test_that_user_can_edit_profile(self, base_url, selenium, new_user):
+        home_page = HomePage(base_url, selenium)
         home_page.go_to_page()
         home_page.login_and_complete_profile(new_user)
 
@@ -39,8 +39,8 @@ class TestUserProfile():
         assert new_user['url'] == edit_profile.user_profile_url
         assert new_user['email'] == edit_profile.bugzilla_email
 
-    def test_that_user_can_delete_profile(self, mozwebqa, new_user):
-        home_page = HomePage(mozwebqa)
+    def test_that_user_can_delete_profile(self, base_url, selenium, new_user):
+        home_page = HomePage(base_url, selenium)
         home_page.go_to_page()
         home_page.login_and_complete_profile(new_user)
 

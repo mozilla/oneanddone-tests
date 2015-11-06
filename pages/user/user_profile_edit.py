@@ -42,7 +42,7 @@ class UserProfileEditPage(Base):
 
     def click_delete_profile_button(self):
         self.selenium.find_element(*self._delete_profile_button_locator).click()
-        return UserProfileDeletePage(self.testsetup)
+        return UserProfileDeletePage(self.base_url, self.selenium)
 
     def click_save_button(self, expectation):
         self.selenium.find_element(*self._save_button_locator).click()

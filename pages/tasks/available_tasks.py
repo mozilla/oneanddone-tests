@@ -18,7 +18,7 @@ class AvailableTasksPage(Base):
 
     @property
     def available_tasks(self):
-        return [self.Task(self.testsetup, web_element)
+        return [self.Task(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._available_tasks_list_locator)]
 
     @property
@@ -34,4 +34,4 @@ class AvailableTasksPage(Base):
 
         def click(self):
             self.find_element(*self._name_locator).click()
-            return TaskDetailsPage(self.testsetup)
+            return TaskDetailsPage(self.base_url, self.selenium)

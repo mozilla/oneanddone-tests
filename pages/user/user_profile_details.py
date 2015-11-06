@@ -33,7 +33,7 @@ class UserProfileDetailsPage(Base):
 
     @property
     def completed_tasks(self):
-        return [self.Task(self.testsetup, web_element)
+        return [self.Task(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._completed_tasks_list_locator)]
 
     @property
@@ -46,7 +46,7 @@ class UserProfileDetailsPage(Base):
 
     def click_edit_profile_button(self):
         self.find_element(*self._edit_profile_button_locator).click()
-        return UserProfileEditPage(self.testsetup)
+        return UserProfileEditPage(self.base_url, self.selenium)
 
     class Task(PageRegion):
         _name_locator = (By.CSS_SELECTOR, 'a')
@@ -57,4 +57,4 @@ class UserProfileDetailsPage(Base):
 
         def click(self):
             self.find_element(*self._name_locator).click()
-            return TaskDetailsPage(self.testsetup)
+            return TaskDetailsPage(self.base_url, self.selenium)

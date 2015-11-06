@@ -17,14 +17,13 @@ class Page(object):
     Base class for all Pages
     """
 
-    def __init__(self, testsetup):
+    def __init__(self, base_url, selenium):
         """
         Constructor
         """
-        self.testsetup = testsetup
-        self.base_url = testsetup.base_url
-        self.selenium = testsetup.selenium
-        self.timeout = testsetup.timeout
+        self.base_url = base_url
+        self.selenium = selenium
+        self.timeout = 10
         self._selenium_root = hasattr(self, '_root_element') and self._root_element or self.selenium
 
     @property
@@ -46,7 +45,7 @@ class Page(object):
             return False
         finally:
             # set back to where you once belonged
-            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+            self.selenium.implicitly_wait(self.timeout)
 
     def is_element_visible(self, *locator):
         try:
@@ -62,7 +61,7 @@ class Page(object):
             return True
         finally:
             # set back to where you once belonged
-            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+            self.selenium.implicitly_wait(self.timeout)
 
     def wait_for_element_visible(self, *locator):
         count = 0
@@ -79,7 +78,7 @@ class Page(object):
             WebDriverWait(self.selenium, 10).until(lambda s: self._selenium_root.find_element(*locator))
         finally:
             # set back to where you once belonged
-            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+            self.selenium.implicitly_wait(self.timeout)
 
     def wait_for_element_not_present(self, *locator):
         """Wait for an element to become not present."""
@@ -91,7 +90,7 @@ class Page(object):
             return False
         finally:
             # set back to where you once belonged
-            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+            self.selenium.implicitly_wait(self.timeout)
 
     def type_in_element(self, locator, text):
         """
@@ -123,6 +122,6 @@ class Page(object):
 
 class PageRegion(Page):
 
-    def __init__(self, testsetup, element):
+    def __init__(self, base_url, selenium, element):
         self._root_element = element
-        Page.__init__(self, testsetup)
+        Page.__init__(self, base_url, selenium)

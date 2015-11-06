@@ -23,11 +23,11 @@ class TaskDetailsPage(Base):
 
     def click_abandon_task_button(self):
         self.selenium.find_element(*self._abandon_task_button_locator).click()
-        return TaskFeedbackPage(self.testsetup)
+        return TaskFeedbackPage(self.base_url, self.selenium)
 
     def click_complete_task_button(self):
         self.selenium.find_element(*self._complete_task_button_locator).click()
-        return TaskFeedbackPage(self.testsetup)
+        return TaskFeedbackPage(self.base_url, self.selenium)
 
     def click_get_started_button(self):
         self.selenium.find_element(*self._get_started_button_locator).click()
@@ -35,7 +35,7 @@ class TaskDetailsPage(Base):
     def click_save_for_later_button(self):
         self.selenium.find_element(*self._save_for_later_button_locator).click()
         from pages.home import HomePage
-        return HomePage(self.testsetup)
+        return HomePage(self.base_url, self.selenium)
 
     @property
     def is_abandon_task_button_not_visible(self):

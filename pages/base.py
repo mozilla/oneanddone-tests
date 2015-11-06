@@ -16,7 +16,7 @@ class Base(Page):
 
     @property
     def header(self):
-        return self.HeaderRegion(self.testsetup)
+        return self.HeaderRegion(self.base_url, self.selenium)
 
     @property
     def is_user_logged_in(self):
@@ -28,7 +28,7 @@ class Base(Page):
         browser_id.sign_in(user['email'], user['password'])
         self.wait_for_element_visible(*self._logout_menu_item_locator)
         from pages.user.user_profile_edit import UserProfileEditPage
-        return UserProfileEditPage(self.testsetup)
+        return UserProfileEditPage(self.base_url, self.selenium)
 
     def login_and_complete_profile(self, user):
         edit_profile = self.login(user)
@@ -39,10 +39,10 @@ class Base(Page):
     def expected_page(self, expectation):
         if expectation == 'user_profile_details':
             from pages.user.user_profile_details import UserProfileDetailsPage
-            return UserProfileDetailsPage(self.testsetup)
+            return UserProfileDetailsPage(self.base_url, self.selenium)
         elif expectation == 'home_page':
             from pages.home import HomePage
-            return HomePage(self.testsetup)
+            return HomePage(self.base_url, self.selenium)
 
     def click_browserid_login(self):
         self.selenium.find_element(*self._browserid_login_locator).click()
@@ -58,4 +58,4 @@ class Base(Page):
         def click_user_profile_details(self):
             self.selenium.find_element(*self._profile_link_locator).click()
             from pages.user.user_profile_details import UserProfileDetailsPage
-            return UserProfileDetailsPage(self.testsetup)
+            return UserProfileDetailsPage(self.base_url, self.selenium)

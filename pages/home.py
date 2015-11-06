@@ -39,8 +39,8 @@ class HomePage(Base):
 
     def click_task_in_progress(self):
         self.selenium.find_element(*self._task_in_progress_locator).click()
-        return TaskDetailsPage(self.testsetup)
+        return TaskDetailsPage(self.base_url, self.selenium)
 
     def click_pick_a_task_button(self):
         self.selenium.find_element(*self._pick_a_task_locator).click()
-        return AvailableTasksPage(self.testsetup)
+        return AvailableTasksPage(self.base_url, self.selenium)

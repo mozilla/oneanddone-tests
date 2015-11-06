@@ -7,8 +7,8 @@ from pages.home import HomePage
 
 class TestLogin():
 
-    def test_that_a_new_user_can_login(self, mozwebqa, new_user):
-        home_page = HomePage(mozwebqa)
+    def test_that_a_new_user_can_login(self, base_url, selenium, new_user):
+        home_page = HomePage(base_url, selenium)
         home_page.go_to_page()
         assert not home_page.is_user_logged_in
 
