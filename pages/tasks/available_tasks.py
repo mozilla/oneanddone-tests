@@ -30,8 +30,8 @@ class AvailableTasksPage(Base):
 
         @property
         def name(self):
-            return self.find_element(*self._name_locator).text
+            return self.root.find_element(*self._name_locator).text
 
         def click(self):
-            self.find_element(*self._name_locator).click()
-            return TaskDetailsPage(self.base_url, self.selenium)
+            self.root.find_element(*self._name_locator).click()
+            return TaskDetailsPage(self.base_url, self.selenium).wait_for_page_to_load()

@@ -10,13 +10,11 @@ from pages.home import HomePage
 class TestUserProfile():
 
     def test_that_user_can_edit_profile(self, base_url, selenium, new_user):
-        home_page = HomePage(base_url, selenium)
-        home_page.go_to_page()
+        home_page = HomePage(base_url, selenium).open()
         home_page.login_and_complete_profile(new_user)
 
-        profile_details = home_page.header.click_user_profile_details()
+        profile_details = home_page.click_user_profile_details()
         edit_profile = profile_details.click_edit_profile_button()
-        assert edit_profile.is_the_current_page
         assert new_user['name'] == edit_profile.display_name
         assert new_user['name'] == edit_profile.username
 
@@ -28,7 +26,6 @@ class TestUserProfile():
         edit_profile.type_bugzilla_email(new_user['email'])
         profile_details = edit_profile.click_save_button('user_profile_details')
 
-        assert profile_details.is_the_current_page
         assert new_name == profile_details.user_profile_name
         assert new_user['url'] == profile_details.user_profile_url
         assert new_user['email'] == profile_details.bugzilla_email
@@ -40,22 +37,19 @@ class TestUserProfile():
         assert new_user['email'] == edit_profile.bugzilla_email
 
     def test_that_user_can_delete_profile(self, base_url, selenium, new_user):
-        home_page = HomePage(base_url, selenium)
-        home_page.go_to_page()
+        home_page = HomePage(base_url, selenium).open()
         home_page.login_and_complete_profile(new_user)
 
-        profile_details = home_page.header.click_user_profile_details()
+        profile_details = home_page.click_user_profile_details()
         edit_profile = profile_details.click_edit_profile_button()
 
         confirm_delete = edit_profile.click_delete_profile_button()
-        assert confirm_delete.is_the_current_page
 
         homepage = confirm_delete.click_cancel_button()
-        assert homepage.is_the_current_page
         assert homepage.is_user_logged_in
         assert new_user['name'] in homepage.displayed_profile_name
 
-        profile_details = home_page.header.click_user_profile_details()
+        profile_details = home_page.click_user_profile_details()
         edit_profile = profile_details.click_edit_profile_button()
         confirm_delete = edit_profile.click_delete_profile_button()
         home_page = confirm_delete.click_confirm_button()
@@ -63,4 +57,3 @@ class TestUserProfile():
 
         create_profile = home_page.login(new_user)
         assert create_profile.is_user_logged_in
-        assert create_profile.is_the_current_page

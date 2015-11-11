@@ -45,16 +45,16 @@ class UserProfileDetailsPage(Base):
         return self.selenium.find_element(*self._user_profile_url_locator).text
 
     def click_edit_profile_button(self):
-        self.find_element(*self._edit_profile_button_locator).click()
-        return UserProfileEditPage(self.base_url, self.selenium)
+        self.selenium.find_element(*self._edit_profile_button_locator).click()
+        return UserProfileEditPage(self.base_url, self.selenium).wait_for_page_to_load()
 
     class Task(PageRegion):
         _name_locator = (By.CSS_SELECTOR, 'a')
 
         @property
         def name(self):
-            return self.find_element(*self._name_locator).text
+            return self.root.find_element(*self._name_locator).text
 
         def click(self):
-            self.find_element(*self._name_locator).click()
-            return TaskDetailsPage(self.base_url, self.selenium)
+            self.root.find_element(*self._name_locator).click()
+            return TaskDetailsPage(self.base_url, self.selenium).wait_for_page_to_load()

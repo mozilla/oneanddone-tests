@@ -3,59 +3,54 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from browserid import BrowserID
-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait as Wait
 
 from pages.page import Page
 
 
 class Base(Page):
 
-    _browserid_login_locator = (By.CSS_SELECTOR, '.browserid-login > span')
+    _login_locator = (By.CSS_SELECTOR, '.browserid-login > span')
     _logout_menu_item_locator = (By.CSS_SELECTOR, 'a.browserid-logout')
-
-    @property
-    def header(self):
-        return self.HeaderRegion(self.base_url, self.selenium)
+    _profile_link_locator = (By.ID, 'view-profile')
 
     @property
     def is_user_logged_in(self):
-        return self.is_element_not_visible(*self._browserid_login_locator)
+        return not self.is_element_visible(self._login_locator)
+
+    @property
+    def profile_link_text(self):
+        return self.selenium.find_element(*self._profile_link_locator).text
+
+    def click_login(self):
+        self.selenium.find_element(*self._login_locator).click()
+
+    def click_user_profile_details(self):
+        self.selenium.find_element(*self._profile_link_locator).click()
+        from pages.user.user_profile_details import UserProfileDetailsPage
+        return UserProfileDetailsPage(self.base_url, self.selenium).wait_for_page_to_load()
+
+    def expected_page(self, expectation):
+        if expectation == 'user_profile_details':
+            from pages.user.user_profile_details import UserProfileDetailsPage
+            return UserProfileDetailsPage(self.base_url, self.selenium).wait_for_page_to_load()
+        elif expectation == 'home_page':
+            from pages.home import HomePage
+            return HomePage(self.base_url, self.selenium).wait_for_page_to_load()
 
     def login(self, user):
-        self.click_browserid_login()
+        self.click_login()
         browser_id = BrowserID(self.selenium, self.timeout)
         browser_id.sign_in(user['email'], user['password'])
-        self.wait_for_element_visible(*self._logout_menu_item_locator)
+        Wait(self.selenium, self.timeout).until(
+            EC.visibility_of_element_located(self._logout_menu_item_locator))
         from pages.user.user_profile_edit import UserProfileEditPage
-        return UserProfileEditPage(self.base_url, self.selenium)
+        return UserProfileEditPage(self.base_url, self.selenium).wait_for_page_to_load()
 
     def login_and_complete_profile(self, user):
         edit_profile = self.login(user)
         edit_profile.type_name(user['name'])
         edit_profile.type_username(user['name'])
         return edit_profile.click_save_button('home_page')
-
-    def expected_page(self, expectation):
-        if expectation == 'user_profile_details':
-            from pages.user.user_profile_details import UserProfileDetailsPage
-            return UserProfileDetailsPage(self.base_url, self.selenium)
-        elif expectation == 'home_page':
-            from pages.home import HomePage
-            return HomePage(self.base_url, self.selenium)
-
-    def click_browserid_login(self):
-        self.selenium.find_element(*self._browserid_login_locator).click()
-
-    class HeaderRegion(Page):
-
-        _profile_link_locator = (By.ID, 'view-profile')
-
-        @property
-        def profile_link_text(self):
-            return self.selenium.find_element(*self._profile_link_locator).text
-
-        def click_user_profile_details(self):
-            self.selenium.find_element(*self._profile_link_locator).click()
-            from pages.user.user_profile_details import UserProfileDetailsPage
-            return UserProfileDetailsPage(self.base_url, self.selenium)

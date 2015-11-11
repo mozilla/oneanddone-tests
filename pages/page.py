@@ -2,126 +2,68 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import time
-
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import ElementNotVisibleException
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait as Wait
+
+
+TIMEOUT = 10
 
 
 class Page(object):
-    """
-    Base class for all Pages
-    """
+
+    _page_title = None
+    _url = None
 
     def __init__(self, base_url, selenium):
-        """
-        Constructor
-        """
         self.base_url = base_url
         self.selenium = selenium
-        self.timeout = 10
-        self._selenium_root = hasattr(self, '_root_element') and self._root_element or self.selenium
+        self.timeout = TIMEOUT
 
     @property
     def is_the_current_page(self):
-        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.title)
-        assert self._page_title == self.selenium.title
+        if self._page_title is not None:
+            Wait(self.selenium, self.timeout).until(lambda s: s.title)
+            assert self._page_title == self.selenium.title
         return True
 
     @property
-    def current_page_url(self):
-        return self.selenium.current_url
+    def url(self):
+        if self._url is not None:
+            return self._url.format(base_url=self.base_url)
+        return self.base_url
 
-    def is_element_present(self, *locator):
-        self.selenium.implicitly_wait(0)
+    def is_element_visible(self, locator):
         try:
-            self._selenium_root.find_element(*locator)
-            return True
-        except NoSuchElementException:
-            return False
-        finally:
-            # set back to where you once belonged
-            self.selenium.implicitly_wait(self.timeout)
-
-    def is_element_visible(self, *locator):
-        try:
-            return self._selenium_root.find_element(*locator).is_displayed()
-        except (NoSuchElementException, ElementNotVisibleException, StaleElementReferenceException):
+            return self.selenium.find_element(*locator).is_displayed()
+        except (NoSuchElementException,):
             return False
 
-    def is_element_not_visible(self, *locator):
-        self.selenium.implicitly_wait(0)
-        try:
-            return not self._selenium_root.find_element(*locator).is_displayed()
-        except (NoSuchElementException, ElementNotVisibleException):
-            return True
-        finally:
-            # set back to where you once belonged
-            self.selenium.implicitly_wait(self.timeout)
-
-    def wait_for_element_visible(self, *locator):
-        count = 0
-        while not self.is_element_visible(*locator):
-            time.sleep(1)
-            count += 1
-            if count == self.timeout:
-                raise Exception(':'.join(locator) + ' is not visible')
-
-    def wait_for_element_present(self, *locator):
-        """Wait for an element to become present."""
-        self.selenium.implicitly_wait(0)
-        try:
-            WebDriverWait(self.selenium, 10).until(lambda s: self._selenium_root.find_element(*locator))
-        finally:
-            # set back to where you once belonged
-            self.selenium.implicitly_wait(self.timeout)
-
-    def wait_for_element_not_present(self, *locator):
-        """Wait for an element to become not present."""
-        self.selenium.implicitly_wait(0)
-        try:
-            WebDriverWait(self.selenium, 10).until(lambda s: len(self._selenium_root.find_elements(*locator)) < 1)
-            return True
-        except TimeoutException:
-            return False
-        finally:
-            # set back to where you once belonged
-            self.selenium.implicitly_wait(self.timeout)
+    def open(self):
+        self.selenium.get(self.url)
+        return self.wait_for_page_to_load()
 
     def type_in_element(self, locator, text):
-        """
-        Type a string into an element.
-
-        This method clears the element first then types the string via send_keys.
-
-        Arguments:
-        locator -- a locator for the element
-        text -- the string to type via send_keys
-
-        """
-        text_fld = self._selenium_root.find_element(*locator)
+        text_fld = self.selenium.find_element(*locator)
         text_fld.clear()
         text_fld.send_keys(text)
 
-    def maximize_window(self):
-        try:
-            self.selenium.maximize_window()
-        except WebDriverException:
-            pass
-
-    def find_element(self, *locator):
-        return self._selenium_root.find_element(*locator)
-
-    def find_elements(self, *locator):
-        return self._selenium_root.find_elements(*locator)
+    def wait_for_page_to_load(self):
+        assert self.is_the_current_page
+        return self
 
 
-class PageRegion(Page):
+class PageRegion(object):
 
-    def __init__(self, base_url, selenium, element):
-        self._root_element = element
-        Page.__init__(self, base_url, selenium)
+    _root_locator = None
+
+    def __init__(self, base_url, selenium, root=None):
+        self.base_url = base_url
+        self.selenium = selenium
+        self.timeout = TIMEOUT
+        self.root_element = root
+
+    @property
+    def root(self):
+        if self.root_element is None and self._root_locator is not None:
+            self.root_element = self.selenium.find_element(*self._root_locator)
+        return self.root_element

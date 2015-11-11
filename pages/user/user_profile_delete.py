@@ -17,8 +17,8 @@ class UserProfileDeletePage(Base):
 
     def click_cancel_button(self):
         self.selenium.find_element(*self._cancel_button_locator).click()
-        return HomePage(self.base_url, self.selenium)
+        return HomePage(self.base_url, self.selenium).wait_for_page_to_load()
 
     def click_confirm_button(self):
         self.selenium.find_element(*self._confirm_button_locator).click()
-        return HomePage(self.base_url, self.selenium)
+        return HomePage(self.base_url, self.selenium).wait_for_page_to_load()

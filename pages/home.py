@@ -22,25 +22,17 @@ class HomePage(Base):
         return self.selenium.find_element(*self._displayed_profile_name_locator).text
 
     @property
-    def is_task_not_in_progress(self):
-        return self.is_element_not_visible(*self._task_in_progress_locator)
-
-    @property
     def is_task_in_progress(self):
-        return self.is_element_visible(*self._task_in_progress_locator)
+        return self.is_element_visible(self._task_in_progress_locator)
 
     @property
     def task_in_progress(self):
         return self.selenium.find_element(*self._task_in_progress_locator).text
 
-    def go_to_page(self):
-        self.selenium.get(self.base_url + '/')
-        assert self.is_the_current_page
-
     def click_task_in_progress(self):
         self.selenium.find_element(*self._task_in_progress_locator).click()
-        return TaskDetailsPage(self.base_url, self.selenium)
+        return TaskDetailsPage(self.base_url, self.selenium).wait_for_page_to_load()
 
     def click_pick_a_task_button(self):
         self.selenium.find_element(*self._pick_a_task_locator).click()
-        return AvailableTasksPage(self.base_url, self.selenium)
+        return AvailableTasksPage(self.base_url, self.selenium).wait_for_page_to_load()

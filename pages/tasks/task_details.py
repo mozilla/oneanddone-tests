@@ -23,11 +23,11 @@ class TaskDetailsPage(Base):
 
     def click_abandon_task_button(self):
         self.selenium.find_element(*self._abandon_task_button_locator).click()
-        return TaskFeedbackPage(self.base_url, self.selenium)
+        return TaskFeedbackPage(self.base_url, self.selenium).wait_for_page_to_load()
 
     def click_complete_task_button(self):
         self.selenium.find_element(*self._complete_task_button_locator).click()
-        return TaskFeedbackPage(self.base_url, self.selenium)
+        return TaskFeedbackPage(self.base_url, self.selenium).wait_for_page_to_load()
 
     def click_get_started_button(self):
         self.selenium.find_element(*self._get_started_button_locator).click()
@@ -35,39 +35,23 @@ class TaskDetailsPage(Base):
     def click_save_for_later_button(self):
         self.selenium.find_element(*self._save_for_later_button_locator).click()
         from pages.home import HomePage
-        return HomePage(self.base_url, self.selenium)
-
-    @property
-    def is_abandon_task_button_not_visible(self):
-        return self.is_element_not_visible(*self._abandon_task_button_locator)
+        return HomePage(self.base_url, self.selenium).wait_for_page_to_load()
 
     @property
     def is_abandon_task_button_visible(self):
-        return self.is_element_visible(*self._abandon_task_button_locator)
-
-    @property
-    def is_complete_task_button_not_visible(self):
-        return self.is_element_not_visible(*self._complete_task_button_locator)
+        return self.is_element_visible(self._abandon_task_button_locator)
 
     @property
     def is_complete_task_button_visible(self):
-        return self.is_element_visible(*self._complete_task_button_locator)
+        return self.is_element_visible(self._complete_task_button_locator)
 
     @property
     def is_get_started_button_visible(self):
-        return self.is_element_visible(*self._get_started_button_locator)
-
-    @property
-    def is_get_started_button_not_visible(self):
-        return self.is_element_not_visible(*self._get_started_button_locator)
-
-    @property
-    def is_save_for_later_button_not_visible(self):
-        return self.is_element_not_visible(*self._save_for_later_button_locator)
+        return self.is_element_visible(self._get_started_button_locator)
 
     @property
     def is_save_for_later_button_visible(self):
-        return self.is_element_visible(*self._save_for_later_button_locator)
+        return self.is_element_visible(self._save_for_later_button_locator)
 
     @property
     def name(self):
