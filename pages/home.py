@@ -5,6 +5,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
+from pages.tasks.regions.task import Task
 from pages.tasks.task_details import TaskDetailsPage
 from pages.tasks.available_tasks import AvailableTasksPage
 
@@ -16,6 +17,8 @@ class HomePage(Base):
     _displayed_profile_name_locator = (By.CSS_SELECTOR, '.billboard h3')
     _task_in_progress_locator = (By.ID, 'task-in-progress')
     _pick_a_task_locator = (By.ID, 'pick-a-task')
+    _suggested_first_tasks_heading_locator = (By.CSS_SELECTOR, '.task-list-container h3')
+    _suggested_first_task_locator = (By.CSS_SELECTOR, '.task-list > li')
 
     @property
     def displayed_profile_name(self):
@@ -28,6 +31,15 @@ class HomePage(Base):
     @property
     def task_in_progress(self):
         return self.selenium.find_element(*self._task_in_progress_locator).text
+
+    @property
+    def is_suggested_first_tasks_heading_visible(self):
+        return self.is_element_visible(self._suggested_first_tasks_heading_locator)
+
+    @property
+    def suggested_first_tasks(self):
+        return [Task(self.base_url, self.selenium, web_element)
+                for web_element in self.selenium.find_elements(*self._suggested_first_task_locator)]
 
     def click_task_in_progress(self):
         self.selenium.find_element(*self._task_in_progress_locator).click()

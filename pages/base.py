@@ -21,6 +21,10 @@ class Base(Page):
         return not self.is_element_visible(self._login_locator)
 
     @property
+    def is_login_button_visible(self):
+        return self.is_element_visible(self._login_locator)
+
+    @property
     def profile_link_text(self):
         return self.selenium.find_element(*self._profile_link_locator).text
 

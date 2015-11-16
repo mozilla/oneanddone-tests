@@ -5,8 +5,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
-from pages.page import PageRegion
-from pages.tasks.task_details import TaskDetailsPage
+from pages.tasks.regions.task import Task
 
 
 class AvailableTasksPage(Base):
@@ -18,20 +17,9 @@ class AvailableTasksPage(Base):
 
     @property
     def available_tasks(self):
-        return [self.Task(self.base_url, self.selenium, web_element)
+        return [Task(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._available_tasks_list_locator)]
 
     @property
     def displayed_profile_name(self):
         return self.selenium.find_element(*self._displayed_profile_name_locator).text
-
-    class Task(PageRegion):
-        _name_locator = (By.CSS_SELECTOR, 'a.task-name')
-
-        @property
-        def name(self):
-            return self.root.find_element(*self._name_locator).text
-
-        def click(self):
-            self.root.find_element(*self._name_locator).click()
-            return TaskDetailsPage(self.base_url, self.selenium).wait_for_page_to_load()
