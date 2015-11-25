@@ -12,7 +12,7 @@ from pages.page import Page
 
 class Base(Page):
 
-    _login_locator = (By.CSS_SELECTOR, '.browserid-login > span')
+    _login_locator = (By.CSS_SELECTOR, 'a.browserid-login')
     _logout_menu_item_locator = (By.CSS_SELECTOR, 'a.browserid-logout')
     _profile_link_locator = (By.ID, 'view-profile')
 
